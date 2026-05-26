@@ -5,12 +5,9 @@ Homebrew formulas for projects that don't ship their own Homebrew support.
 ## Usage
 
 ```sh
-brew tap unship/unships https://github.com/unship/homebrew-unships.git
+brew tap unship/unships
 brew install unship/unships/<formula>
 ```
-
-> The repo is private, so the explicit URL is required and your local git must be
-> authenticated to `github.com/unship` (SSH key or `gh auth setup-git`).
 
 ## Formulas
 
