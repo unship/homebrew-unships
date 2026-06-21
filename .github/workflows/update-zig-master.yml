@@ -1,0 +1,39 @@
+name: update-zig-master
+
+# Zig's master channel keeps only the latest nightly online, so a pinned URL
+# goes stale (404s) within a day or two. Re-pin the formula on a schedule and
+# on demand. Twice a day keeps the staleness window small without churning
+# commits; bump the cron if you want it tighter.
+on:
+  schedule:
+    - cron: "17 6,18 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-zig-master
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate formula from ziglang.org
+        run: python3 scripts/update-zig-master.py
+
+      - name: Commit & push if the nightly moved
+        run: |
+          if git diff --quiet -- Formula/zig-master.rb; then
+            echo "zig-master already current; nothing to commit."
+            exit 0
+          fi
+          version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/zig-master.rb)"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/zig-master.rb
+          git commit -m "zig-master: bump to ${version}"
+          git push
