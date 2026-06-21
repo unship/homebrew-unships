@@ -8,7 +8,7 @@
 class ZigMaster < Formula
   desc "Programming language designed for robustness, optimality, and clarity"
   homepage "https://ziglang.org"
-  version "0.0.0-stale-test"
+  version "0.17.0-dev.931+84f84267c"
   license "MIT"
 
   # Parallel/versioned formula: keep it keg-only so it coexists with Homebrew
