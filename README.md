@@ -15,6 +15,7 @@ brew install unship/unships/<formula>
 | ------------------- | --------------------------------------------------------- | -------------------------------------------------- |
 | `apple-events-mcp`  | https://github.com/farmerajf/apple-events-mcp             | MCP server for Apple Reminders & Calendar (Swift) |
 | `zig-master`        | https://ziglang.org/download/                             | Zig compiler — latest master/nightly, prebuilt, auto-updated |
+| `zls-master`        | https://github.com/zigtools/zls                           | Zig Language Server — nightly matched to Zig master, auto-updated |
 
 ## zig-master
 
@@ -44,6 +45,31 @@ python3 scripts/update-zig-master.py
 It installs **keg-only** so it coexists with Homebrew core's `zig` (which `zls`
 depends on). To use it as your `zig`, run `brew link zig-master`, or prepend
 `$(brew --prefix)/opt/zig-master/bin` to your `PATH`.
+
+## zls-master
+
+`zls-master` installs the [ZLS](https://github.com/zigtools/zls) (Zig Language
+Server) nightly that pairs with `zig-master`:
+
+```sh
+brew install unship/unships/zls-master
+```
+
+ZLS has no standalone "master" download index. Instead,
+[`scripts/update-zls-master.py`](scripts/update-zls-master.py) reads Zig's
+current master version and asks the ZLS
+[version-matching API](https://releases.zigtools.org/v1/zls/select-version) for
+the newest ZLS build that is runtime-compatible with it, then pins that. The
+[`update-zls-master`](.github/workflows/update-zls-master.yml) workflow keeps it
+fresh (twice daily, plus on-demand). To refresh by hand:
+
+```sh
+python3 scripts/update-zls-master.py
+```
+
+Like `zig-master`, it's **keg-only** and coexists with Homebrew core's `zls`.
+To use it, run `brew link zls-master`, or prepend
+`$(brew --prefix)/opt/zls-master/bin` to your `PATH`.
 
 ## Adding a new formula
 

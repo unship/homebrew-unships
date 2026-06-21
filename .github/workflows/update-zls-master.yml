@@ -1,0 +1,38 @@
+name: update-zls-master
+
+# ZLS nightlies are paired to Zig master and rotate as new builds land, so the
+# pinned URLs go stale. Re-pin on a schedule and on demand. Offset from
+# update-zig-master so a fresh Zig bump is usually already in place.
+on:
+  schedule:
+    - cron: "37 7,19 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-zls-master
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate formula from the ZLS version API
+        run: python3 scripts/update-zls-master.py
+
+      - name: Commit & push if the nightly moved
+        run: |
+          if git diff --quiet -- Formula/zls-master.rb; then
+            echo "zls-master already current; nothing to commit."
+            exit 0
+          fi
+          version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/zls-master.rb)"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/zls-master.rb
+          git commit -m "zls-master: bump to ${version}"
+          git push
