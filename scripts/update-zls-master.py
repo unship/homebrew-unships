@@ -57,11 +57,6 @@ class ZlsMaster < Formula
   version "@@VERSION@@"
   license "MIT"
 
-  # Parallel/versioned formula: keep it keg-only so it coexists with Homebrew
-  # core's `zls`. Put it on PATH with `brew link zls-master`, or prepend the
-  # keg's opt bin dir. Pairs with the `zig-master` formula in this tap.
-  keg_only :versioned_formula
-
   on_macos do
     on_arm do
       url "@@MACOS_ARM_URL@@"

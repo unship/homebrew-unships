@@ -1,0 +1,44 @@
+name: update-tileserver-gl
+
+# tileserver-gl is an npm package: unlike the zig/zls nightlies its tarballs
+# don't disappear, so staleness is benign -- this just tracks new releases. It
+# also re-picks the pinned node@<major> if maplibre-gl-native changes which Node
+# ABIs it ships macOS prebuilds for. Runs on a schedule and on demand; offset
+# from the zig/zls jobs to spread the load.
+on:
+  schedule:
+    - cron: "47 8,20 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-tileserver-gl
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Regenerate formula from the npm registry
+        env:
+          # Authenticate the GitHub API call (maplibre release assets) to dodge
+          # the 60-req/hour unauthenticated rate limit.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/update-tileserver-gl.py
+
+      - name: Commit & push if the release moved
+        run: |
+          if git diff --quiet -- Formula/tileserver-gl.rb; then
+            echo "tileserver-gl already current; nothing to commit."
+            exit 0
+          fi
+          version="$(sed -n 's|^  url ".*/tileserver-gl-\(.*\)\.tgz"|\1|p' Formula/tileserver-gl.rb)"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/tileserver-gl.rb
+          git commit -m "tileserver-gl: bump to ${version}"
+          git push
