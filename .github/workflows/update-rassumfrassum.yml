@@ -1,0 +1,39 @@
+name: update-rassumfrassum
+
+# rassumfrassum ships tagged GitHub releases; this workflow pins the formula to
+# the latest one. Runs on a schedule and on demand, offset from the other jobs.
+on:
+  schedule:
+    - cron: "57 9,21 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-rassumfrassum
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Regenerate formula from GitHub releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/update-rassumfrassum.py
+
+      - name: Commit & push if the release moved
+        run: |
+          if git diff --quiet -- Formula/rassumfrassum.rb; then
+            echo "rassumfrassum already current; nothing to commit."
+            exit 0
+          fi
+          version="$(sed -n 's|.*/refs/tags/v\(.*\)\.tar.gz"|\1|p' Formula/rassumfrassum.rb)"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/rassumfrassum.rb
+          git commit -m "rassumfrassum: bump to ${version}"
+          git push

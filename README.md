@@ -17,6 +17,7 @@ brew install unship/unships/<formula>
 | `zig-master`        | https://ziglang.org/download/                             | Zig compiler — latest master/nightly, prebuilt, auto-updated |
 | `zls-master`        | https://github.com/zigtools/zls                           | Zig Language Server — nightly matched to Zig master, auto-updated |
 | `tileserver-gl`     | https://github.com/maptiler/tileserver-gl                 | Map tile server (MapLibre GL), full server-side rendering, npm-based, macOS-only, auto-updated |
+| `rassumfrassum`     | https://github.com/joaotavora/rassumfrassum               | LSP multiplexer (`rass`) — one client to many servers, auto-updated |
 
 ## zig-master
 
@@ -108,6 +109,26 @@ commits new releases automatically. To refresh by hand:
 
 ```sh
 python3 scripts/update-tileserver-gl.py
+```
+
+## rassumfrassum
+
+`rassumfrassum` installs [rassumfrassum](https://github.com/joaotavora/rassumfrassum),
+an LSP/JSONRPC multiplexer that lets a single LSP client talk to multiple language
+servers through one stdio connection:
+
+```sh
+brew install unship/unships/rassumfrassum
+```
+
+The installed `rass` command is the main entry point (e.g. `rass python` to
+multiplex `ty` and `ruff`). The formula is regenerated from GitHub releases by
+[`scripts/update-rassumfrassum.py`](scripts/update-rassumfrassum.py) and the
+[`update-rassumfrassum`](.github/workflows/update-rassumfrassum.yml) workflow
+commits new releases automatically. To refresh by hand:
+
+```sh
+python3 scripts/update-rassumfrassum.py
 ```
 
 ## Adding a new formula
