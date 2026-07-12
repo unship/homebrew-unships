@@ -26,8 +26,15 @@ class RimeDaemon < Formula
     shimdir.mkpath
     shim = shimdir/"librime.1.dylib"
     cp "target/release/librime_shim.dylib", shim
-    # 不必手动设 LC_ID:brew 的 keg 修复会把 id 与依赖统一重写为 opt/ 路径。
+    # 必须在编 liberime-core 之前把 shim 的 LC_ID 显式改成 opt 路径。cargo 产物的
+    # LC_ID 是构建期临时路径(.../target/release/deps/librime_shim.dylib);ld 会把
+    # 被链接 dylib 当时的 LC_ID 记进 liberime-core 的依赖项(不是命令行传的路径)。
+    # 交给 brew keg relocation 不行:shim 被改名(librime_shim→librime.1)又跨目录,
+    # brew 只重写一半(shim 自身 id 的前缀),liberime-core 仍指向已删的临时路径 →
+    # "Library not loaded"。这是 v0.2.1 相对 v0.1.0 删掉此行导致的回归。
     # 副作用:同一 Emacs 进程内跨版本热切换不可行(dyld 按路径去重)→ 升级后重启 Emacs。
+    stable_shim = opt_lib/"rime-daemon/librime.1.dylib"
+    system "install_name_tool", "-id", stable_shim, shim
 
     resource("liberime").stage do
       emacs_module = Dir["emacs-module/*"].max_by { |d| File.basename(d).to_i }
