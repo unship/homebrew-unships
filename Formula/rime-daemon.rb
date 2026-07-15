@@ -1,8 +1,8 @@
 class RimeDaemon < Formula
   desc "Share one RIME engine and user dictionary across Emacs instances"
   homepage "https://github.com/unship/rime-daemon"
-  url "https://github.com/unship/rime-daemon/archive/refs/tags/v0.2.1.tar.gz"
-  sha256 "72e4215d9c8f054519d958a8b625f756cb1540285b41db96bda2f04b2eb23237"
+  url "https://github.com/unship/rime-daemon/archive/refs/tags/v0.2.2.tar.gz"
+  sha256 "9d7493b210c1dd387c39cfd8574d52b4add56f3c50cac459d014f499d3ee3d33"
   license "BSD-3-Clause"
   head "https://github.com/unship/rime-daemon.git", branch: "main"
 
