@@ -18,6 +18,7 @@ brew install unship/unships/<formula>
 | `zls-master`        | https://github.com/zigtools/zls                           | Zig Language Server — nightly matched to Zig master, auto-updated |
 | `tileserver-gl`     | https://github.com/maptiler/tileserver-gl                 | Map tile server (MapLibre GL), full server-side rendering, npm-based, macOS-only, auto-updated |
 | `rassumfrassum`     | https://github.com/joaotavora/rassumfrassum               | LSP multiplexer (`rass`) — one client to many servers, auto-updated |
+| `cream`             | https://github.com/borkdude/cream                         | Full JVM Clojure in a native binary via GraalVM Crema, prebuilt |
 
 ## zig-master
 

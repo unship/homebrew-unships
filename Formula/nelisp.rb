@@ -12,64 +12,42 @@ class Nelisp < Formula
   # (Emacs.app, emacs-plus, etc.) is visible during the build.
   env :std
 
-  # Emacs (batch mode) is required for the pure-Elisp AOT build on Linux.
-  # On macOS the standalone build is not yet supported by upstream
-  # (Mach-O linker limitation: no RW sections in executables).
-  # The formula still installs the Elisp sources for use within Emacs.
-  # Install Emacs first if you don't have it, e.g.:
-  #   brew install emacs          # homebrew/core
-  #   brew install emacs-plus     # d12frosted/emacs-plus
+  # Emacs (batch mode) is required for the pure-Elisp AOT build.
+  # The standalone binary is built via `make standalone-reader` with
+  # NELISP_STANDALONE_TARGET set to the platform triple.
+  # On macOS arm64 the binary is ad-hoc codesigned after linking.
+  depends_on "emacs" => :build
 
   def install
-    if OS.linux?
-      target = Hardware::CPU.arm? ? "linux-aarch64" : "linux-x86_64"
-      ENV["NELISP_STANDALONE_TARGET"] = target
-      system "make", "standalone-reader"
-      bin.install "target/nelisp"
+    target = if OS.mac?
+      Hardware::CPU.arm? ? "macos-aarch64" : odie("macOS x86_64 is not supported by nelisp upstream")
     else
-      # macOS: install Elisp sources for use within Emacs.
-      # The standalone AOT build is blocked on nelisp's Mach-O linker
-      # supporting read-write sections (tracked upstream).
-      elisp = share/"emacs/site-lisp/nelisp"
-      elisp.install Dir["lisp/*.el"]
-      elisp.install Dir["src/*.el"]
-      elisp.install Dir["packages/*/src/*.el"]
-      # scripts/ has the build toolchain; useful for REPL-driven dev.
-      (elisp/"scripts").install Dir["scripts/*.el"]
+      Hardware::CPU.arm? ? "linux-aarch64" : "linux-x86_64"
     end
+    ENV["NELISP_STANDALONE_TARGET"] = target
+    system "make", "standalone-reader"
+    bin.install "target/nelisp"
+    # Also install Elisp sources so nelisp can be used within Emacs.
+    elisp = share/"emacs/site-lisp/nelisp"
+    elisp.install Dir["lisp/*.el"]
+    elisp.install Dir["src/*.el"]
+    elisp.install Dir["packages/*/src/*.el"]
+    (elisp/"scripts").install Dir["scripts/*.el"]
   end
 
   def caveats
-    if OS.mac?
-      <<~EOS
-        The standalone `nelisp` binary is not yet available on macOS
-        (upstream Mach-O linker limitation).
+    <<~EOS
+      To use nelisp from within Emacs, add to your init.el:
 
-        To use nelisp from within Emacs, add to your init.el:
-
-          (add-to-list 'load-path "#{share}/emacs/site-lisp/nelisp")
-          (add-to-list 'load-path "#{share}/emacs/site-lisp/nelisp/scripts")
-          (require 'nelisp-bootstrap)
-          (nelisp-bootstrap-init)
-          (nelisp-eval-string "(+ 1 2 3)")  ; => 6
-      EOS
-    end
+        (add-to-list 'load-path "#{share}/emacs/site-lisp/nelisp")
+        (add-to-list 'load-path "#{share}/emacs/site-lisp/nelisp/scripts")
+        (require 'nelisp-bootstrap)
+        (nelisp-bootstrap-init)
+        (nelisp-eval-string "(+ 1 2 3)")  ; => 6
+    EOS
   end
 
   test do
-    if OS.linux?
-      assert_match "42", shell_output("#{bin}/nelisp --eval '(+ 40 2)'")
-    else
-      assert_match "42", shell_output(
-        "emacs --batch -Q " \
-        "-L #{share}/emacs/site-lisp/nelisp " \
-        "-L #{share}/emacs/site-lisp/nelisp/scripts " \
-        "--eval \"(setq load-prefer-newer t)\" " \
-        "-l nelisp-bootstrap " \
-        "--eval \"(nelisp-bootstrap-init)\" " \
-        "--eval \"(princ (nelisp-eval-string \\\"(+ 40 2)\\\"))\" " \
-        "2>&1"
-      )
-    end
+    assert_match "42", shell_output("#{bin}/nelisp --eval '(+ 40 2)'")
   end
 end
