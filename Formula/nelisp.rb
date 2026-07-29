@@ -5,18 +5,19 @@ class Nelisp < Formula
   version "0.6.0"
   sha256 "cc1081b06e35c86f4498daa9495dbdcba7c2f26c78fc99583e590467aadf7bfc"
   license "GPL-3.0-only"
-  head "https://github.com/zawatton/nelisp.git", branch: "main"
   revision 1
+  head "https://github.com/zawatton/nelisp.git", branch: "main"
 
   # Use the user's PATH so `emacs` from a non-Homebrew install
   # (Emacs.app, emacs-plus, etc.) is visible during the build.
+  #
+  # We deliberately do NOT `depends_on "emacs" => :build`: doing so forces
+  # Homebrew to install and `brew link` its own `emacs` formula, which
+  # collides with users who already have Emacs.app / emacs-plus symlinks in
+  # /opt/homebrew/bin/{emacs,emacsclient,ebrowse,etags} (the link step aborts
+  # with "Could not symlink bin/ebrowse ... already exists").  With `env :std`
+  # and `EMACS ?= emacs` in the Makefile, the user's PATH emacs is used instead.
   env :std
-
-  # Emacs (batch mode) is required for the pure-Elisp AOT build.
-  # The standalone binary is built via `make standalone-reader` with
-  # NELISP_STANDALONE_TARGET set to the platform triple.
-  # On macOS arm64 the binary is ad-hoc codesigned after linking.
-  depends_on "emacs" => :build
 
   def install
     target = if OS.mac?
