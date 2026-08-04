@@ -29,6 +29,7 @@ cask "neomacs" do
 
   depends_on macos: :monterey
   depends_on arch: :arm64
+  depends_on formula: "gstreamer"
 
   app "neomacs.app"
 
