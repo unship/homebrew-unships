@@ -9,8 +9,8 @@ class Rassumfrassum < Formula
 
   desc "LSP/JSONRPC multiplexer connecting one LSP client to multiple servers"
   homepage "https://github.com/joaotavora/rassumfrassum"
-  url "https://github.com/joaotavora/rassumfrassum/archive/refs/tags/v0.3.4.tar.gz"
-  sha256 "9dbef8253bc2cf4f0d3cca18fa29d405a5b2b28430b84122be11eb7315b0dcfe"
+  url "https://github.com/joaotavora/rassumfrassum/archive/refs/tags/v0.3.5.tar.gz"
+  sha256 "5cd3215d59a1d13bf2a7ae65ad94387b70160365bae206cc0d03c3abeb060a5f"
   license "GPL-3.0-or-later"
 
   depends_on "python@3.13"
