@@ -9,28 +9,28 @@
 class ZlsMaster < Formula
   desc "Language server for the Zig programming language"
   homepage "https://github.com/zigtools/zls"
-  version "0.17.0-dev.44+8da87d4f"
+  version "0.17.0"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://builds.zigtools.org/zls-aarch64-macos-0.17.0-dev.44+8da87d4f.tar.xz"
-      sha256 "e14170c554c2306a17402a81c9058915c36f69282504d4dbe04b2ff1d3c380cf"
+      url "https://builds.zigtools.org/zls-aarch64-macos-0.17.0.tar.xz"
+      sha256 "2e451358b4f7e2d4b1fccb65db177dbb321c5a98e95f67e09aa72d6ecfb39d20"
     end
     on_intel do
-      url "https://builds.zigtools.org/zls-x86_64-macos-0.17.0-dev.44+8da87d4f.tar.xz"
-      sha256 "477e2cd6440643960c4c372c1d14c35d7093cace526fd08c6c072e091fdb1785"
+      url "https://builds.zigtools.org/zls-x86_64-macos-0.17.0.tar.xz"
+      sha256 "0801481ebf0027620db6729968c069401c7b80f376d35f9f91f480d72c393523"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://builds.zigtools.org/zls-aarch64-linux-0.17.0-dev.44+8da87d4f.tar.xz"
-      sha256 "ea9a8b194f7e74409e16b26747a1efd40c094381d22e18af340a7b826d454203"
+      url "https://builds.zigtools.org/zls-aarch64-linux-0.17.0.tar.xz"
+      sha256 "0d314f3cab30da770328e1b8c84ab89bb308e56dbc26a85ac82429ff02b44873"
     end
     on_intel do
-      url "https://builds.zigtools.org/zls-x86_64-linux-0.17.0-dev.44+8da87d4f.tar.xz"
-      sha256 "9ea223fa88424671555911beba5d689191ae080a4e827ef5c76c8f64e39ff296"
+      url "https://builds.zigtools.org/zls-x86_64-linux-0.17.0.tar.xz"
+      sha256 "dfa4514e1868803fdf2ae56832c88b9d400094d70ea6bb136b57bcc91af10258"
     end
   end
 
