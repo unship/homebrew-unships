@@ -11,8 +11,8 @@
 class TileserverGl < Formula
   desc "Map tile server for vector and raster tiles with server-side GL rendering"
   homepage "https://github.com/maptiler/tileserver-gl"
-  url "https://registry.npmjs.org/tileserver-gl/-/tileserver-gl-5.6.0.tgz"
-  sha256 "9340bcb4e59e5f3908685721396d4a0c3c431d19e10c1bec65009133035d48f0"
+  url "https://registry.npmjs.org/tileserver-gl/-/tileserver-gl-5.7.0.tgz"
+  sha256 "f8450499a20828abd3eab85beaef229960cd87da96bbb8d2d05c6d110cd22534"
   license "BSD-2-Clause"
 
   depends_on :macos
