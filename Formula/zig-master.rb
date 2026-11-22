@@ -8,28 +8,28 @@
 class ZigMaster < Formula
   desc "Programming language designed for robustness, optimality, and clarity"
   homepage "https://ziglang.org"
-  version "0.18.0-dev.1260+833623422"
+  version "0.18.0-dev.1272+2ff397f75"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://ziglang.org/builds/zig-aarch64-macos-0.18.0-dev.1260+833623422.tar.xz"
-      sha256 "cfebc697e8b650f20317a174d777d7c9f150efc688b3714686ba649de3db7804"
+      url "https://ziglang.org/builds/zig-aarch64-macos-0.18.0-dev.1272+2ff397f75.tar.xz"
+      sha256 "76ff8231659358ccc817153ae6ce963b992e1f88bc944be7a540aa5b420151bf"
     end
     on_intel do
-      url "https://ziglang.org/builds/zig-x86_64-macos-0.18.0-dev.1260+833623422.tar.xz"
-      sha256 "5962a8472d44e22f5b082b50b0a64bd9fb24c85db182d4fed2ed39c2bd5172f0"
+      url "https://ziglang.org/builds/zig-x86_64-macos-0.18.0-dev.1272+2ff397f75.tar.xz"
+      sha256 "a98f9697111314dd051c41dff3d74ac574cd425bbb974ebf53055ba72b9a62d0"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://ziglang.org/builds/zig-aarch64-linux-0.18.0-dev.1260+833623422.tar.xz"
-      sha256 "886cd9c1b752838c7c87fb33c9fe82199b2f082c9668e74ffa540409c9ec30db"
+      url "https://ziglang.org/builds/zig-aarch64-linux-0.18.0-dev.1272+2ff397f75.tar.xz"
+      sha256 "63fa9a959a75d59c66497bf96f3e162d2bfffb576d53f8bd08246a01cdb68bbe"
     end
     on_intel do
-      url "https://ziglang.org/builds/zig-x86_64-linux-0.18.0-dev.1260+833623422.tar.xz"
-      sha256 "053b20c3c7dc97d8c0d576ebf19e6db78f8bdff1aa4d95f660c037cd3b94b9f7"
+      url "https://ziglang.org/builds/zig-x86_64-linux-0.18.0-dev.1272+2ff397f75.tar.xz"
+      sha256 "767b1ff5bc704fe2c1bc1b4a1bfae3a1237ae0475ba94357c32bcec5f4eddf28"
     end
   end
 
